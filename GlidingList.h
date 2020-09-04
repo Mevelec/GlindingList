@@ -5,6 +5,10 @@
 template <class T>
 class GlindingList
 {
+
+////////////////////////////////////////////////////////////////
+/////////////////////////  DECLARATIONS  ///////////////////////
+////////////////////////////////////////////////////////////////
 protected:
 	typedef T value_type; 
 	typedef T* pointer; 
@@ -13,7 +17,7 @@ protected:
 	typedef const T& const_reference; 
 	typedef size_t size_type;
 
-// NODE
+///////// NODE /////////////////
 	template< class T>
 	class Node
 	{
@@ -33,29 +37,44 @@ protected:
 	typedef	Node<value_type> value_node;
 	typedef	Node<value_type>* value_node_ptr;
 
-// ITERATOR
+///////////////// ITERATOR /////////////////
 	template< class T>
 	class Iterator
 	{
 	private:
 		value_node_ptr node;
 	public:
-		Iterator(value_node_ptr node)
-			:
+		Iterator()
+		{
+		};
+
+		Iterator( value_node_ptr node) :
 			node(node)
 		{
 		};
 
 	// OPERATORS
 	public:
-		Iterator<typename T>& operator++() {
-			return *this->next;
-		};
-
-		Iterator operator++(int) {
-			if (this->next != nullptr)
+		reference operator*()
+		{
+			return node->data;
+		}
+		Iterator& operator++() {
+			if (node->next != nullptr)
 			{
-				return *this->next;
+				this->node = node->next;
+				return *this;
+			}
+			else
+			{
+				throw std::exception("illegal offset");
+			}
+		};
+		Iterator operator++(int) {
+			if (node->next != nullptr)
+			{
+				this->node = node->next;
+				return *this;
 			}
 			else
 			{
@@ -63,9 +82,10 @@ protected:
 			}
 		};
 		Iterator& operator--() {
-			if (this->previous != nullptr)
+			if (node->previous != nullptr)
 			{
-				return *this->previous;
+				this->node = node->previous;
+				return *this;
 			}
 			else
 			{
@@ -73,15 +93,17 @@ protected:
 			}
 		};
 		Iterator operator--(int) {
-			if (this->previous != nullptr)
+			if (node->previous != nullptr)
 			{
-				return *this->previous;
+				this->node = node->previous;
+				return *this;
 			}
 			else
 			{
 				throw std::exception("illegal offset");
 			}
 		};
+		/*
 		Iterator operator+(int n)
 		{
 			auto it = *this;
@@ -125,21 +147,30 @@ protected:
 				}
 			}
 			return it;
-		}
+		}*/
 		/*Iterator& operator-=(difference_type n)
-			bool operator==(const self_type& other) const
-			bool operator!=(const self_type& other) const*/
+			bool operator==(const self_type& other) const*/
+		bool operator!=(const Iterator& other) const
+		{
+			if (this->node->data != other.node->data)
+				return 1;
+			else
+				return 0;
+		}
 	};
-	typedef
-		Iterator iterator;
-	typedef
-		Iterator* iterator_ptr;
+	public :
+		typedef	Iterator<value_type> iterator;
+		typedef	Iterator<value_type>* iterator_ptr;
+
+
+////////////////////////////////////////////////////////////////
+/////////////////////////  GLIDINGLIST CLASS  //////////////////
+////////////////////////////////////////////////////////////////
 
 	private:
-		value_node_ptr root;		
+		value_node_ptr root;
 		value_node_ptr tail;
 		value_node_ptr head;
-
 
 // Member functions
 	public:
@@ -159,7 +190,9 @@ protected:
 			else
 			{
 				value_node_ptr node = new value_node(val);
+				// assign refs
 				tail->previous = node;
+				node->next = tail;
 				tail = node;
 			}
 		}
@@ -174,7 +207,10 @@ protected:
 			else
 			{
 				value_node_ptr node = new value_node(val);
+
+				// assign refs
 				head->next = node;
+				node->previous = head;
 				head = node;
 			}
 		}
@@ -184,13 +220,12 @@ protected:
 		{
 
 		};
-		reference front()
+		iterator front()
 		{
-			return this->head->data;
+			return iterator(this->head);
 		};
-		reference back()
+		iterator back()
 		{
-			return this->tail->data;
+			return iterator(this->tail);
 		};
-
 };
