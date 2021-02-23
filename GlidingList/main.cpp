@@ -1,5 +1,3 @@
-
-
 #include "GlidingList.h"
 
 #include <iostream>
@@ -7,54 +5,14 @@
 
 #include <vector>
 
-void test(std::string title, bool test, const char* fmt...)
-{
-	if (test)
-	{
-		std::cout << "\x1B[32m[x]\033[0m\t\t";
-	}
-	else
-	{
-		std::cout << "\x1B[31m[ ]\033[0m\t\t";
-	}
-	std::cout << title << "\n";
-
-
-	va_list args;
-	va_start(args, fmt);
-
-	while (*fmt != '\0') {
-		if (*fmt == 'd') {
-			int i = va_arg(args, int);
-			std::cout << i << '\n';
-		}
-		else if (*fmt == 'c') {
-			// note automatic conversion to integral type
-			int c = va_arg(args, int);
-			std::cout << static_cast<char>(c) << '\n';
-		}
-		else if (*fmt == 's') {
-			// note automatic conversion to integral type
-			std::string c = va_arg(args, const char*);
-			std::cout << c << '\n';
-		}
-		else if (*fmt == 'f') {
-			double d = va_arg(args, double);
-			std::cout << d << '\n';
-		}
-		++fmt;
-	}
-
-	va_end(args);
-}
-
 int main()
 {
+	/*
 // push head only
 	GlindingList<int> gl1;
 	gl1.push_front(0);
 	test(
-		"gl1.push_front(0)", 
+		"gl1.push_front(0)",
 		(*gl1.front() == 0),
 		"sd",
 		"gl1.front()",
@@ -84,7 +42,7 @@ int main()
 	);
 	gl2.push_back(-1);
 	gl2.push_back(-2);
-	gl2.push_back(-3);	
+	gl2.push_back(-3);
 	test(
 		"gl2.push_back(-1 & -2 & -3)",
 		(*gl2.back() == -3),
@@ -171,5 +129,5 @@ int main()
 		std::cout << *back << "\n";
 	}
 
-	return 0;
+	return 0;*/
 }
