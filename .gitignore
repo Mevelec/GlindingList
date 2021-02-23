@@ -367,13 +367,4 @@ bin-int/
 **.vcxproj.user 
 
 # GameEngine
-!Log*
-!vendor/bin/premake/
-!vendor/FastNoiseSIMD/premake.lua
-!Debug/
-
-# SandBox
-Sandbox/profiling/**
-!profileSave/**
-!.gitignore
-!/Sandbox/assets/*
+Debug/
